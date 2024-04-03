@@ -1,14 +1,15 @@
 {
-  "name": "starter-mru",
+  "name": "ephemeral-micro-rollup",
   "module": "index.ts",
   "type": "module",
   "scripts": {
     "test": "mocha --require ts-node/register src/**/*.test.ts"
   },
   "dependencies": {
-    "@stackr/sdk": "latest",
+    "@stackr/sdk": "v0.2.19-alpha",
     "ethers": "^6.7.1",
     "express": "^4.18.2",
+    "inquirer": "^9.2.17",
     "merkletreejs": "^0.3.11",
     "sqlite3": "^5.1.7"
   },

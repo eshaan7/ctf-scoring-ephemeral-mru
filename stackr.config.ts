@@ -14,10 +14,10 @@ const stackrConfig: StackrConfig = {
   },
   sequencer: {
     batchSize: 16,
-    batchTime: 1000,
+    batchTime: 100,
   },
   syncer: {
-    slotTime: 1000,
+    slotTime: 100,
     vulcanRPC: "http://3.6.115.65",
     L1RPC: "http://3.6.115.65:8545",
   },
@@ -41,7 +41,7 @@ const stackrConfig: StackrConfig = {
     uri: "./db.sqlite",
   },
   registryContract: REGISTRY_CONTRACT,
-  logLevel: "debug",
+  logLevel: "info",
 };
 
 export { stackrConfig };

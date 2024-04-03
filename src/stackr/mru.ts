@@ -1,19 +1,22 @@
 import { MicroRollup } from "@stackr/sdk";
-import { stackrConfig } from "../../stackr.config";
 
-import { attestationStateMachine } from "./machine";
+import { stackrConfig } from "../../stackr.config";
+import { scoringStateMachine } from "./machine";
 import { actionSchemas } from "./actions";
 
-type AttestationMachine = typeof attestationStateMachine;
+type ScoringMachine = typeof scoringStateMachine;
 
 const mru = await MicroRollup({
   config: stackrConfig,
-  actions: [...Object.values(actionSchemas)],
-  isSandbox: true,
+  actionSchemas: [...Object.values(actionSchemas)],
+  isSandbox: process.env.IS_SANDBOX === "true",
+  stateMachines: [scoringStateMachine],
+  stfSchemaMap: {
+    addFlag: actionSchemas.AddFlagSchema.identifier,
+    submitFlag: actionSchemas.SubmitFlagSchema.identifier,
+  },
 });
-
-mru.stateMachines.add(attestationStateMachine);
 
 await mru.init();
 
-export { AttestationMachine, mru };
+export { ScoringMachine, mru };

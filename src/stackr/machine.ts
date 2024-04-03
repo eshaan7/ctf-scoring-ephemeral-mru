@@ -1,17 +1,18 @@
 import { StateMachine } from "@stackr/sdk/machine";
+
 import genesisState from "./../../genesis-state.json";
 import { transitions } from "./transitions";
-import { AttestationState } from "./state";
+import { ScoringState } from "./state";
 
 const STATE_MACHINES = {
-  MICRO_ATTESTATIONS: "micro-attestations",
+  EPHEMERAL_SCORING: "ephemeral-scoring",
 };
 
-const attestationStateMachine = new StateMachine({
-  id: STATE_MACHINES.MICRO_ATTESTATIONS,
-  stateClass: AttestationState,
+const scoringStateMachine = new StateMachine({
+  id: STATE_MACHINES.EPHEMERAL_SCORING,
+  stateClass: ScoringState,
   initialState: genesisState.state,
   on: transitions,
 });
 
-export { STATE_MACHINES, attestationStateMachine };
+export { STATE_MACHINES, scoringStateMachine };

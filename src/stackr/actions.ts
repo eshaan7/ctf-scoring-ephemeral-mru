@@ -1,37 +1,21 @@
 import { ActionSchema, SolidityType } from "@stackr/sdk";
 
 /**
-  RegisterSchemaSchema is an action schema for registering a schema.
-**/
-export const RegisterSchemaSchema = new ActionSchema("registerSchema", {
-  schema: SolidityType.STRING,
-  revocable: SolidityType.BOOL,
+ * AddFlagSchema is an action schema for adding a new flag.
+ */
+export const AddFlagSchema = new ActionSchema("addFlag", {
+  flag: SolidityType.STRING,
+  points: SolidityType.UINT,
 });
 
 /**
-  AttestSchema is an action schema for creating a new attestation.
-**/
-export const AttestSchema = new ActionSchema("attest", {
-  schemaUID: SolidityType.STRING,
-  time: SolidityType.UINT,
-  expirationTime: SolidityType.UINT,
-  refUID: SolidityType.STRING,
-  recipient: SolidityType.ADDRESS,
-  revocable: SolidityType.BOOL,
-  data: SolidityType.BYTES,
-});
-
-/**
-  RevokeSchema is an action schema for revoking an existing attestation.
-**/
-export const RevokeSchema = new ActionSchema("revoke", {
-  attestationUID: SolidityType.STRING,
-  schemaUID: SolidityType.STRING,
-  revocationTime: SolidityType.UINT,
+ * SubmitFlagSchema is an action schema for submitting a flag.
+ */
+export const SubmitFlagSchema = new ActionSchema("submitFlag", {
+  flag: SolidityType.STRING,
 });
 
 export const actionSchemas = {
-  RegisterSchemaSchema,
-  AttestSchema,
-  RevokeSchema,
+  AddFlagSchema,
+  SubmitFlagSchema,
 };

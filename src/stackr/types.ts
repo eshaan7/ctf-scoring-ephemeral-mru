@@ -1,43 +1,24 @@
-import { BytesLike } from "ethers";
-
-export type SchemaRecordInput = {
-  schema: string;
-  revocable: boolean;
+/**
+ * A struct representing the global state of the micro-rollup.
+ */
+export type ScoringSystemState = {
+  admins: string[]; // list of admin addresses (that can add flags)
+  flagHashPoints: Record<string, number>; // mapping b/w flag hash and points
+  userScores: Record<string, number>; // mapping b/w user address and score
+  userSubmittedFlagHashes: Record<string, string[]>; // mapping b/w user address and submitted flag hashes
 };
 
-export type SchemaRecordStruct = SchemaRecordInput & {
-  registerer: string;
+/**
+ * A struct representing the input type of `addFlag` STF.
+ */
+export type AddFlagInput = {
+  flag: string;
+  points: number;
 };
 
-export type SchemaRecord = {
-  uid: string;
-} & SchemaRecordStruct;
-
-export type AttestationInput = {
-  schemaUID: string;
-  time: number;
-  expirationTime: number;
-  refUID: string;
-  recipient: string;
-  revocable: boolean;
-  data: BytesLike;
-};
-
-export type AttestationStruct = AttestationInput & {
-  attester: string;
-  revocationTime: number;
-};
-
-export type Attestation = {
-  uid: string;
-} & AttestationStruct;
-
-export type Schema = SchemaRecord & {
-  attestations: Attestation[];
-};
-
-export type RevocationInput = {
-  attestationUID: string;
-  schemaUID: string;
-  revocationTime: number;
+/**
+ * A struct representing the input type of `submitFlag` STF.
+ */
+export type SubmitFlagInput = {
+  flag: string;
 };
