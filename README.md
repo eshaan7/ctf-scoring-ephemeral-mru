@@ -1,4 +1,4 @@
-# ephemeral-mru-ctf-scoring
+# ctf-scoring-ephemeral-mru
 
 Initialized using [@stackr/sdk](https://www.stackrlabs.xyz/).
 
