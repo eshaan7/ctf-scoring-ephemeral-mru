@@ -1,13 +1,20 @@
-import { Transitions, STF, REQUIRE } from "@stackr/sdk/machine";
-import { solidityPackedKeccak256 } from "ethers";
+import {
+  REQUIRE,
+  SolidityType,
+  Transitions,
+} from "@stackr/sdk/machine";
+import { solidityPackedKeccak256 } from "ethers/hash";
 
 import { ScoringState } from "./state";
-import { AddFlagInput, SubmitFlagInput } from "./types";
 
 /**
  * STF to add a new flag.
  */
-const addFlag: STF<ScoringState, AddFlagInput> = {
+const addFlag = ScoringState.defineSTF({
+  schema: {
+    flag: SolidityType.STRING,
+    points: SolidityType.UINT,
+  },
   handler: ({ state, inputs, msgSender }) => {
     const actor = msgSender.toString();
     // Ensure only admins can add flags
@@ -23,12 +30,15 @@ const addFlag: STF<ScoringState, AddFlagInput> = {
     state.flagHashPoints[flagHash] = points;
     return state;
   },
-};
+})
 
 /**
  * STF to submit a flag.
  */
-const submitFlag: STF<ScoringState, SubmitFlagInput> = {
+const submitFlag = ScoringState.defineSTF({
+  schema: {
+    flag: SolidityType.STRING,
+  },
   handler: ({ state, inputs, msgSender }) => {
     const actor = msgSender.toString();
     const { flag } = inputs;
@@ -56,7 +66,7 @@ const submitFlag: STF<ScoringState, SubmitFlagInput> = {
     }
     return state;
   },
-};
+});
 
 export const transitions: Transitions<ScoringState> = {
   addFlag,

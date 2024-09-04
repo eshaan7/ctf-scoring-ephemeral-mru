@@ -5,7 +5,6 @@ import { Playground } from "@stackr/sdk/plugins";
 import { ScoringMachine, mru } from "./mru";
 import { STATE_MACHINES } from "./machine";
 import { getProof, verifyInclusion } from "./tree";
-import { sleep } from "../utils";
 
 const scoringMachine = mru.stateMachines.get<ScoringMachine>(
   STATE_MACHINES.EPHEMERAL_SCORING
@@ -46,6 +45,4 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
       return res.send({ proof, verified });
     }
   );
-
-  await sleep(1000);
 }

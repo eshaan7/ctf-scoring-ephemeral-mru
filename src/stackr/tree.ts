@@ -1,4 +1,4 @@
-import { solidityPackedKeccak256 } from "ethers";
+import { solidityPackedKeccak256 } from "ethers/hash";
 import { MerkleTree } from "merkletreejs";
 
 import { ScoringSystemState } from "./types";

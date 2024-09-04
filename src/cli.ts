@@ -1,17 +1,16 @@
-import inquirer from "inquirer";
+import { ActionConfirmationStatus } from "@stackr/sdk";
 import { Wallet } from "ethers";
+import inquirer from "inquirer";
 
-import { ScoringMachine, mru } from "./stackr/mru";
-import { STATE_MACHINES } from "./stackr/machine";
-import { AddFlagSchema, SubmitFlagSchema } from "./stackr/actions";
-import { getProof, verifyInclusion } from "./stackr/tree";
 import {
   CLIAction,
   CLIAddFlagResponse,
   CLIGetProofResponse,
   CLISubmitFlagResponse,
 } from "./cli-types";
-import { signMessage } from "./utils";
+import { STATE_MACHINES } from "./stackr/machine";
+import { ScoringMachine, mru } from "./stackr/mru";
+import { getProof, verifyInclusion } from "./stackr/tree";
 
 const sm = mru.stateMachines.get<ScoringMachine>(
   STATE_MACHINES.EPHEMERAL_SCORING
@@ -26,37 +25,47 @@ let selectedWallet: Wallet;
 
 const actions = {
   addFlag: async (flag: string, points: number): Promise<void> => {
+    const name = "addFlag";
     const inputs = {
       flag,
       points,
     };
-    const signature = await signMessage(selectedWallet, AddFlagSchema, inputs);
-    const initAction = AddFlagSchema.actionFrom({
+    const domain = mru.config.domain;
+    const types = mru.getStfSchemaMap()[name]!;
+    const signature = await selectedWallet.signTypedData(domain, types, {
+      name,
+      inputs,
+    });
+    const ack = await mru.submitAction({
+      name,
       inputs,
       signature,
       msgSender: selectedWallet.address,
     });
-    const ack = await mru.submitAction("addFlag", initAction);
+    ack.waitFor(ActionConfirmationStatus.C1);
     console.log("\n----------[output]----------");
     console.log("Action has been submitted.");
     console.log(ack);
     console.log("----------[/output]----------\n");
   },
   submitFlag: async (flag: string): Promise<void> => {
+    const name = "submitFlag";
     const inputs = {
       flag,
     };
-    const signature = await signMessage(
-      selectedWallet,
-      SubmitFlagSchema,
-      inputs
-    );
-    const initAction = SubmitFlagSchema.actionFrom({
+    const domain = mru.config.domain;
+    const types = mru.getStfSchemaMap()[name]!;
+    const signature = await selectedWallet.signTypedData(domain, types, {
+      name,
+      inputs,
+    });
+    const ack = await mru.submitAction({
+      name,
       inputs,
       signature,
       msgSender: selectedWallet.address,
     });
-    const ack = await mru.submitAction("submitFlag", initAction);
+    ack.waitFor(ActionConfirmationStatus.C1);
     console.log("\n----------[output]----------");
     console.log("Action has been submitted.");
     console.log(ack);
